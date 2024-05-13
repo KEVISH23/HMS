@@ -1,3 +1,5 @@
 import Iusers from "./Iusers";
 import RequestVerify from "./RequestVerify";
-export {Iusers,RequestVerify}
+import RequestUser from "./ReqUser"
+import { ILogs } from "./Ilogs";
+export {Iusers,RequestVerify,RequestUser,ILogs}

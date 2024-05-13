@@ -1,3 +1,3 @@
 import { doctorService } from "./doctor.service";
-
-export {doctorService}
+import { LogService } from "./logs.service";
+export {doctorService,LogService}

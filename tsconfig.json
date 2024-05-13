@@ -103,12 +103,6 @@
       "@models": [
         "./src/models/index.ts"
       ],
-      // "@dtos": ["src/interfaces/dtos"],
-      // "@interfaces": ["src/interfaces/index.ts"],
-      // "@constants": ["src/constants/index.ts"],
-      // "@templates": ["src/templates/index.ts"],
-      // "@validators": ["src/validators/index.ts"],
-      // "@utils": ["src/utils/index.ts"]
     },
   },
   "include": [
@@ -117,4 +111,5 @@
   "exculde": [
     "node-modules"
   ]
+ 
 }

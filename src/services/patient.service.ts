@@ -1,20 +1,19 @@
 import { injectable } from "inversify";
 import bcrypt from 'bcrypt'
-import { ILogs, Iusers } from "../interfaces";
 import jwt from 'jsonwebtoken'
 import { ApiError } from "../utils/ApiError";
 // import { User } from "@models";
-import { Logs, User } from "../models/index";
-import { PipelineStage } from "mongoose";
+import { User } from "../models/index";
+import { Iusers } from "../interfaces";
 
 @injectable()
-export class doctorService {
-    async registerService(data: object): Promise<void> {
-        await User.create(data)
+export class PatientService{
+    async registerPatient(data:object):Promise<void>{
+        await  User.create(data)
     }
 
-    async getDocotrs(): Promise<Iusers[]> {
-        return await User.find({role:"Doctor"})
+    async getPatients():Promise<Iusers[]>{
+        return await User.find({role:"Patient"})
     }
 
     async isUserExists(email: string): Promise<Iusers | null> {
@@ -44,10 +43,5 @@ export class doctorService {
         await User.findByIdAndUpdate(id, {
             $set: { token: "" }
         })
-    }
-
-    async getLogService(pipeline:PipelineStage[]):Promise<ILogs[]>{
-        // console.log(pipeline)
-        return await Logs.aggregate(pipeline)
     }
 }

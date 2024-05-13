@@ -8,7 +8,7 @@ import errorHandler from '../utils/errorHandler'
 import status_code from '../contants/status'
 import { RequestUser, RequestVerify } from '../interfaces'
 
-export class IsDoctor extends BaseMiddleware{
+export class IsPatient extends BaseMiddleware{
     handler(req: RequestVerify, res: Response, next: NextFunction): void {
         try{
 
@@ -20,8 +20,8 @@ export class IsDoctor extends BaseMiddleware{
                 if(err){
                     throw new ApiError(401,'Invalid Token')
                 }
-                // console.log(decoded)
-                if(decoded.role === 'Doctor'){
+                console.log(decoded)
+                if(decoded.role === 'Patient'){
                     req.user = decoded
                     next()
                 }else{
