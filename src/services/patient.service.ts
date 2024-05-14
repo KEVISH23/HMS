@@ -3,8 +3,9 @@ import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import { ApiError } from "../utils/ApiError";
 // import { User } from "@models";
-import { User } from "../models/index";
-import { Iusers } from "../interfaces";
+import { Logs, User } from "../models/index";
+import { ILogs, Iusers } from "../interfaces";
+import { PipelineStage } from "mongoose";
 
 @injectable()
 export class PatientService{
@@ -43,5 +44,10 @@ export class PatientService{
         await User.findByIdAndUpdate(id, {
             $set: { token: "" }
         })
+    }
+
+    async getLogService(pipeline:PipelineStage[]):Promise<ILogs[]>{
+        // console.log(pipeline)
+        return await Logs.aggregate(pipeline)
     }
 }
