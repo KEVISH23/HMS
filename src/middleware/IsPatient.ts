@@ -1,12 +1,9 @@
-import {request,response,next, BaseMiddleware} from 'inversify-express-utils'
-import {NextFunction, Request,Response} from 'express'
-import { ParamsDictionary } from 'express-serve-static-core'
-import { ParsedQs } from 'qs'
-import jwt from "jsonwebtoken"
-import { ApiError } from '../utils/ApiError'
-import errorHandler from '../utils/errorHandler'
-import status_code from '../contants/status'
-import { RequestUser, RequestVerify } from '../interfaces'
+import {BaseMiddleware} from 'inversify-express-utils'
+import {NextFunction,Response} from 'express'
+import * as jwt from "jsonwebtoken"
+import { ApiError,errorHandler } from '@utils'
+import {status_code} from '@constants'
+import { RequestVerify } from '@interface'
 
 export class IsPatient extends BaseMiddleware{
     handler(req: RequestVerify, res: Response, next: NextFunction): void {
@@ -20,7 +17,6 @@ export class IsPatient extends BaseMiddleware{
                 if(err){
                     throw new ApiError(401,'Invalid Token')
                 }
-                console.log(decoded)
                 if(decoded.role === 'Patient'){
                     req.user = decoded
                     next()

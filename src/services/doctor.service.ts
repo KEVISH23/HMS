@@ -1,11 +1,10 @@
 import { injectable } from "inversify";
-import bcrypt from 'bcrypt'
-import { ILogs, Iusers } from "../interfaces";
-import jwt from 'jsonwebtoken'
-import { ApiError } from "../utils/ApiError";
-// import { User } from "@models";
-import { Logs, User } from "../models/index";
-import { PipelineStage } from "mongoose";
+import * as bcrypt from 'bcrypt'
+import { ILogs, Iusers, LogsQuery } from "@interface";
+import * as jwt from 'jsonwebtoken'
+import { Logs, User } from "@models";
+import mongoose, { PipelineStage } from "mongoose";
+import { createPagination, generateFilter, generateSearch, logsPipeline, projectLogs,ApiError } from "../utils";
 
 @injectable()
 export class doctorService {
@@ -46,8 +45,58 @@ export class doctorService {
         })
     }
 
-    async getLogService(pipeline:PipelineStage[]):Promise<ILogs[]>{
-        // console.log(pipeline)
+    async getLogService(logs:LogsQuery):Promise<ILogs[]>{
+        const { search, year, dateRange, disease, page, limit,id } = logs
+        let query: any = {
+            $match: {},
+        };
+          let pageNumber = (page && Number(page)) || 1;
+          const pageLimit = limit && Number(limit);
+          if (pageNumber < 1) {
+            pageNumber = 1;
+          }
+    
+          let rangeArr: string[] = dateRange ? dateRange.toString().split("/") : [];
+          let filteredArray = [
+            ...(year ? [{ "dateAdmitted.year": Number(year) }] : []),
+            ...(dateRange ? [{
+              admittedAt:
+                rangeArr.length === 2
+                  ? { $gte: new Date(rangeArr[0]), $lte: new Date(rangeArr[1]) }
+                  : { $gte: new Date(rangeArr[0]) },
+            }]:[]),
+            ...(disease ? [{ disease }]:[]),
+          ];
+    
+          //dynamic query for filtering
+          filteredArray.length > 0
+            ? query = generateFilter(filteredArray,query)
+            : null;
+          //dynamic query for searching
+          search && search.toString().trim() !== ""
+            ? query = generateSearch([
+              "doctorName",
+              "patientName",
+              "doctorEmail",
+              "patientEmail",
+              "disease",
+              "speciality",
+            ],query,search.toString())
+            : null;
+
+          const pipeline:PipelineStage[] = [...logsPipeline]
+          pipeline.unshift({
+            $match:{doctor:new mongoose.Types.ObjectId(id)}
+          })
+          if (search || filteredArray.length > 0) {
+            pipeline.push(query);
+          }
+          pipeline.push(projectLogs);
+          if (pageLimit) {
+            pipeline.push(
+              ...createPagination(pageNumber,pageLimit)
+            );
+          }
         return await Logs.aggregate(pipeline)
     }
 }

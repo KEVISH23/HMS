@@ -1,4 +1,4 @@
-const TYPES = {
+export const TYPES = {
     doctorController:Symbol.for('doctorController'),
     doctorService:Symbol.for('doctorService'),
     IsDoctor:Symbol.for('IsDoctor'),
@@ -6,5 +6,3 @@ const TYPES = {
     IsPatient:Symbol.for('IsPatient'),
     LogService:Symbol.for('LogService')
 }
-
-export default TYPES

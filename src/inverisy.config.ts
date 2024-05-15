@@ -1,8 +1,7 @@
 import { Container } from "inversify";
-import { doctorService,LogService } from "./services";
-import TYPES from "./contants/TYPES";
-import { IsDoctor,IsPatient } from "./middleware/";
-import { PatientService } from "./services/patient.service";
+import { doctorService,LogService,PatientService } from "@service";
+import {TYPES} from "@constants";
+import { IsDoctor,IsPatient } from "@middleware";
 const container = new Container()
 container.bind<doctorService>(TYPES.doctorService).to(doctorService)
 container.bind<IsDoctor>(TYPES.IsDoctor).to(IsDoctor)

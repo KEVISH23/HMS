@@ -1,6 +1,6 @@
 import { ApiError } from "./ApiError";
 
-export default function errorHandler(err:any):string{
+export function errorHandler(err:any):string{
     let message:string = ""
     if(err instanceof ApiError){
         return err.message

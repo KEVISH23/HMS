@@ -1,4 +1,4 @@
-const responseMessage =  {
+export const responseMessage =  {
     SERVER_ERROR:"Please try again",
     CREATED:"Created",
     LOGIN:"Logged In",
@@ -9,4 +9,4 @@ const responseMessage =  {
     INVALID_ID:"Invalid Id provided",
     LOG_UPDATE_REQUIRED:"Discharge date and amount is required",
 }
-export default responseMessage 
+ 

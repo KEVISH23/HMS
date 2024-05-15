@@ -1,7 +1,6 @@
 import { isValidObjectId } from "mongoose"
-import { ApiError } from "../utils/ApiError"
-import responseMessage from "../contants/message"
-import { ILogs } from "../interfaces"
+import { ApiError } from "@utils"
+import {responseMessage} from "@constants"
 
 export function updateFunction(id:string,data:any){
     // const {id} = req.params

@@ -1,6 +1,6 @@
-import { speciality } from "../enum";
+import { speciality } from "@enum";
 import mongoose, { Schema, Model } from "mongoose";
-import bcrypt from 'bcrypt'
+import * as bcrypt from 'bcrypt'
 const userSchema = new Schema({
     email: {
         type: String,
