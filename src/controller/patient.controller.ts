@@ -11,7 +11,7 @@ import { Request, Response } from "express";
 import {errorHandler,ApiError} from "@utils";
 import {status_code,responseMessage,TYPES} from "@constants";
 import { inject } from "inversify";
-import { PatientService } from "../services/";
+import { PatientService } from "@service";
 import { ILogs, Iusers, RequestUser, RequestVerify } from "@interface";
 @controller("/patient")
 export class PatientController {
@@ -26,7 +26,7 @@ export class PatientController {
     try {
       const { email, name, password, speciality, dob } = req.body;
       if (speciality) {
-        throw new ApiError(500, "Patient odes not need speaciality");
+        throw new ApiError(500, responseMessage.PATIENT_SPECIALITY);
       }
       await this.PS.registerPatient({
         email,
@@ -66,16 +66,16 @@ export class PatientController {
     try {
       const { email, password } = req.body;
       if (!email || !password) {
-        throw new ApiError(503, "Email and password are necessary for login");
+        throw new ApiError(503,responseMessage.LOGIN_REQUIRED);
       }
       const findData: Iusers | null = await this.PS.isUserExists(email);
       if (!findData) {
-        throw new ApiError(503, "You are not registered");
+        throw new ApiError(503, responseMessage.NOT_REGISTERED);
       }
       const id: string = findData._id ? findData._id : "";
       let isLoggedIn = await this.PS.isLoggedIn(id);
       if (isLoggedIn) {
-        throw new ApiError(400, "Already Loggeed In");
+        throw new ApiError(400, responseMessage.ALREADY_LOGIN);
       }
       await this.PS.loginService(email, password, findData);
       res.status(status_code.SUCCESS).json({ message: responseMessage.LOGIN });
@@ -95,7 +95,7 @@ export class PatientController {
       const id: string = user._id ? user._id : "";
       let isLoggedIn = await this.PS.isLoggedIn(id);
       if (!isLoggedIn) {
-        throw new ApiError(400, "User not Logged In");
+        throw new ApiError(400, responseMessage.NOT_LOGED_IN);
       }
       user._id ? await this.PS.logoutService(user._id) : null;
       res.status(status_code.SUCCESS).json({ message: responseMessage.LOGOUT });

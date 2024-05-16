@@ -42,7 +42,9 @@ export class LogsController {
     @response() res: Response
   ): Promise<void> {
     try {
-      const { search, year, dateRange, disease, page, limit } = req.query;
+      const { search, year, dateRange, disease, page, limit,sortBy } = req.query;
+      // console.log(typeof sortBy)
+    
       const data: ILogs[] = await this.LS.getLogs({
         search: search?.toString(),
         year: year?.toString(),
@@ -50,6 +52,7 @@ export class LogsController {
         disease: disease?.toString(),
         page: page?.toString(),
         limit: limit?.toString(),
+        sortBy:sortBy?.toString().split(',')
       });
       res.status(status_code.SUCCESS).json({ data });
     } catch (err: any) {

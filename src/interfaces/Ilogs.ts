@@ -1,5 +1,3 @@
-import mongoose from "mongoose";
-
 interface ILogs {
     _id?:string,
     doctor:string

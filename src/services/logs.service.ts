@@ -2,8 +2,8 @@ import { injectable } from "inversify";
 import { Logs } from "@models";
 import { ILogs } from "@interface";
 import { PipelineStage } from "mongoose";
-import { LogsQuery } from "../interfaces/";
-import { createPagination, generateFilter, generateSearch, logsPipeline, projectLogs } from "../utils";
+import { LogsQuery } from "@interface";
+import { createPagination, generateFilter, generateSearch, logsPipeline, projectLogs } from "@utils";
 
 @injectable()
 export class LogService {
@@ -11,7 +11,8 @@ export class LogService {
         await Logs.create(data)
     }
     async getLogs(logs:LogsQuery):Promise<ILogs[]>{
-        const { search, year, dateRange, disease, page, limit } = logs
+        const { search, year, dateRange, disease, page, limit,sortBy } = logs
+        // console.log(sortBy)
         let query: any = {
             $match: {},
           };
@@ -64,6 +65,32 @@ export class LogService {
               ...createPagination(pageNumber,pageLimit)
             );
           }
+          
+          let obj = {}
+          sortBy && sortBy.forEach((ele)=>{
+            const d2 = ele.split(':')
+            obj[d2[0]] = Number(d2[1])
+          })
+
+
+          // let sortQuery= sortBy.join()
+          // sortQuery:JSON =  JSON.parse(sortQuery)
+          // console.log(sortBy.join())
+          //   sortBy.forEach(ele=>{
+          //     const key = Object.keys(ele)
+              
+          //     console.log(ele,key)
+          //   })
+          
+        // console.log(sortBy)
+
+          sortBy && pipeline.push({
+            $sort:{
+              ...obj
+            }
+          })
+
+          console.log(pipeline)
         return await Logs.aggregate(pipeline)
     }
 

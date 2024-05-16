@@ -4,7 +4,7 @@ import * as jwt from 'jsonwebtoken'
 import { Logs, User } from "@models";
 import { ILogs, Iusers, LogsQuery } from "@interface";  
 import mongoose, { PipelineStage } from "mongoose";
-import { createPagination, generateFilter, generateSearch, logsPipeline, projectLogs,ApiError } from "../utils";
+import { createPagination, generateFilter, generateSearch, logsPipeline, projectLogs,ApiError } from "@utils";
 
 @injectable()
 export class PatientService{

@@ -15,14 +15,15 @@ export const logsPipeline: PipelineStage[] = [
         preserveNullAndEmptyArrays: true,
       },
     },
-    {
-      $addFields: {
-        speciality: "$result.speciality",
-        doctorName: "$result.name",
-        doctorDOB: "$result.dob",
-        doctorEmail: "$result.email",
-      },
-    },
+    // '{
+    //   $addFields: {
+    //     speciality: "$result.speciality",
+    //     doctorName: "$result.name",
+    //     doctorDOB: "$result.dob",
+    //     doctorEmail: "$result.email",
+    //   },
+    // }
+    
     {
       $lookup: {
         from: "users",
@@ -47,11 +48,15 @@ export const logsPipeline: PipelineStage[] = [
           // $toDate:'$admittedAt'
           // $dateTrunc:{date:'$admittedAt',unit:"month"}
         },
+        speciality: "$result.speciality",
+        doctorName: "$result.name",
+        doctorDOB: "$result.dob",
+        doctorEmail: "$result.email",
       },
     },
   ];
 
-  export const projectLogs:any = {
+  export const projectLogs:PipelineStage = {
     $project: {
       result: 0,
       patientResult: 0,

@@ -1,7 +1,4 @@
 {
-    "Localhost": {
-      "dbConfig": "mongodb+srv://kevishshaligram:MKSTmRfboUqYJvPK@practicecluster.yuqi3gp.mongodb.net/?retryWrites=true&w=majority&appName=practiceCluster",
-      "port": 3000
-    }
-  }
-  
+  "dbConfig": "mongodb+srv://kevishshaligram:MKSTmRfboUqYJvPK@practicecluster.yuqi3gp.mongodb.net/DMS_Local?retryWrites=true&w=majority&appName=practiceCluster",
+  "port": 50000
+}

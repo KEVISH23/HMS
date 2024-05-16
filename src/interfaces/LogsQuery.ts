@@ -5,5 +5,6 @@ export interface LogsQuery{
     disease:string|undefined
     page:string|undefined
     limit:string|undefined
-    id?:string
+    id?:string,
+    sortBy?:string[]|undefined
 }

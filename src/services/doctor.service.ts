@@ -4,7 +4,7 @@ import { ILogs, Iusers, LogsQuery } from "@interface";
 import * as jwt from 'jsonwebtoken'
 import { Logs, User } from "@models";
 import mongoose, { PipelineStage } from "mongoose";
-import { createPagination, generateFilter, generateSearch, logsPipeline, projectLogs,ApiError } from "../utils";
+import { createPagination, generateFilter, generateSearch, logsPipeline, projectLogs,ApiError } from "@utils";
 
 @injectable()
 export class doctorService {
@@ -12,9 +12,9 @@ export class doctorService {
         await User.create(data)
     }
 
-    async getDocotrs(): Promise<Iusers[]> {
-        return await User.find({role:"Doctor"})
-    }
+      async getDocotrs(): Promise<Iusers[]> {
+          return await User.find({role:"Doctor"})
+      }
 
     async isUserExists(email: string): Promise<Iusers | null> {
         return await User.findOne({ email })

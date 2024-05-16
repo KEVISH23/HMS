@@ -13,12 +13,12 @@ server.setConfig((app) => {
   app.use(express.json());
   // app.use()
 });
-server.build().listen(config.get("Localhost.port"), () => {
-  console.log("server running on port " + config.get("Localhost.port"));
+server.build().listen(config.get("port"), () => {
+  console.log("server running on port " + config.get("port"));
 });
 
 mongoose
-  .connect(config.get("Localhost.dbConfig"))
+  .connect(config.get("dbConfig"))
   .then(() => {
     console.log("db connected");
   })
