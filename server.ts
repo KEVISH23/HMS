@@ -1,10 +1,10 @@
 import "reflect-metadata";
 import * as config from "config";
 import { InversifyExpressServer } from "inversify-express-utils";
-import container from "./inverisy.config";
+import container from "./src/inverisy.config";
 import * as express from "express";
 import mongoose from "mongoose";
-import "./controller";
+import "./src/controller";
 
 // const app:Express = express()
 // app.use(express.json())

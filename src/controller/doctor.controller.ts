@@ -16,6 +16,11 @@ import { ILogs, Iusers, RequestUser, RequestVerify } from "@interface";
 import { deleteFunction, updateFunction } from "@handler";
 import * as yup from 'yup'
 import { doctorSchema, patientSchema } from "@validations";
+// const RequredRole = role => (req, res, next) => {
+//   req.requiredRole = role; 
+//   console.log(req.requiredRole)
+//   next();
+// }
 @controller("/doctor")
 export class doctorController {
   constructor(
@@ -30,6 +35,7 @@ export class doctorController {
     @response() res: Response
   ): Promise<void> {
     try {
+      
       const { email, name, password, speciality, dob} = req.body;
      await doctorSchema.validate(req.body)
         await this.DS.registerService({
@@ -96,6 +102,7 @@ export class doctorController {
     @response() res: Response
   ): Promise<void> {
     try {
+
       const user: RequestUser = req.user ? req.user : {};
       const id: string = user._id ? user._id : "";
       let isLoggedIn = await this.DS.isLoggedIn(id);
