@@ -55,7 +55,6 @@ export class doctorService {
           if (pageNumber < 1) {
             pageNumber = 1;
           }
-    
           let rangeArr: string[] = dateRange ? dateRange.toString().split("/") : [];
           let filteredArray = [
             ...(year ? [{ "dateAdmitted.year": Number(year) }] : []),

@@ -16,6 +16,7 @@
       "@constants":["./src/constants/index.ts"],
       "@enum":["./src/enum/index.ts"],
       "@middleware":["./src/middleware/index.ts"],
+      "@validations":["./src/validations/index.ts"]
     },
   },
   "include": [

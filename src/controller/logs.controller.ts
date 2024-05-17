@@ -14,6 +14,7 @@ import { inject } from "inversify";
 import { LogService } from "@service";
 import { ILogs } from "@interface";
 import { deleteFunction, updateFunction } from "@handler";
+import { logsSchema } from "@validations";
 
 @controller("/logs")
 export class LogsController {
@@ -26,6 +27,10 @@ export class LogsController {
   ): Promise<void> {
     try {
       const { doctor, patient, disease, admittedAt } = req.body;
+      const data = {
+        create:req.body
+      }
+      await logsSchema.validate(data)
       await this.LS.addLogsService({ doctor, patient, disease, admittedAt });
       res
         .status(status_code.CREATED)
@@ -70,6 +75,7 @@ export class LogsController {
       const { id } = req.params;
       const { dischargeAt, amount } = req.body;
       updateFunction(id, { dischargeAt, amount });
+      await logsSchema.validate({update:req.body})
       await this.LS.updateLogs(id, { dischargeAt, amount });
       res
         .status(status_code.SUCCESS)

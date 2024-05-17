@@ -13,6 +13,7 @@ import {status_code,responseMessage,TYPES} from "@constants";
 import { inject } from "inversify";
 import { PatientService } from "@service";
 import { ILogs, Iusers, RequestUser, RequestVerify } from "@interface";
+import { patientSchema } from "../validations/validationsSchema";
 @controller("/patient")
 export class PatientController {
   constructor(
@@ -24,10 +25,11 @@ export class PatientController {
     @response() res: Response
   ): Promise<void> {
     try {
-      const { email, name, password, speciality, dob } = req.body;
-      if (speciality) {
-        throw new ApiError(500, responseMessage.PATIENT_SPECIALITY);
+      const { email, name, password, dob } = req.body;
+      const data = {
+        register:req.body
       }
+      await patientSchema.validate(data)
       await this.PS.registerPatient({
         email,
         name,
@@ -65,9 +67,7 @@ export class PatientController {
   ): Promise<void> {
     try {
       const { email, password } = req.body;
-      if (!email || !password) {
-        throw new ApiError(503,responseMessage.LOGIN_REQUIRED);
-      }
+      await patientSchema.validate({login:req.body})
       const findData: Iusers | null = await this.PS.isUserExists(email);
       if (!findData) {
         throw new ApiError(503, responseMessage.NOT_REGISTERED);

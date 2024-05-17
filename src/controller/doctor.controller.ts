@@ -14,7 +14,8 @@ import { doctorService, LogService } from "@service";
 import {responseMessage,status_code,TYPES} from "@constants";
 import { ILogs, Iusers, RequestUser, RequestVerify } from "@interface";
 import { deleteFunction, updateFunction } from "@handler";
-
+import * as yup from 'yup'
+import { doctorSchema, patientSchema } from "@validations";
 @controller("/doctor")
 export class doctorController {
   constructor(
@@ -29,21 +30,21 @@ export class doctorController {
     @response() res: Response
   ): Promise<void> {
     try {
-      const { email, name, password, speciality, dob } = req.body;
-      if (!speciality) {
-        throw new ApiError(500, responseMessage.DOCTOR_SPECIALITY);
-      }
-      await this.DS.registerService({
-        email,
-        name,
-        password,
-        speciality,
-        dob,
-        role: "Doctor",
-      });
-      res
-        .status(status_code.CREATED)
-        .json({ message: responseMessage.CREATED });
+      const { email, name, password, speciality, dob} = req.body;
+     await doctorSchema.validate(req.body)
+        await this.DS.registerService({
+          email,
+          name,
+          password,
+          speciality,
+          dob,
+          role: "Doctor",
+        });
+        res
+          .status(status_code.CREATED)
+          .json({ message: responseMessage.CREATED });
+      
+     
     } catch (err: any) {
       const message: string = errorHandler(err);
       res.status(status_code.SERVER_ERROR).json({ message });
@@ -71,9 +72,7 @@ export class doctorController {
   ): Promise<void> {
     try {
       const { email, password } = req.body;
-      if (!email || !password) {
-        throw new ApiError(503, responseMessage.LOGIN_REQUIRED);
-      }
+      await patientSchema.validate({login:req.body})
       const findData: Iusers | null = await this.DS.isUserExists(email);
       if (!findData) {
         throw new ApiError(503, responseMessage.NOT_REGISTERED);
