@@ -14,13 +14,27 @@ import { doctorService, LogService } from "@service";
 import {responseMessage,status_code,TYPES} from "@constants";
 import { ILogs, Iusers, RequestUser, RequestVerify } from "@interface";
 import { deleteFunction, updateFunction } from "@handler";
-import * as yup from 'yup'
+import * as multer from 'multer'
 import { doctorSchema, patientSchema } from "@validations";
-// const RequredRole = role => (req, res, next) => {
-//   req.requiredRole = role; 
-//   console.log(req.requiredRole)
-//   next();
-// }
+import * as path from 'node:path'
+const RequredRole = role => (req, res, next) => {
+  req.requiredRole = role; 
+  console.log(req.requiredRole)
+  next();
+}
+const storageConfig = multer.diskStorage({
+  destination:path.join(__dirname,"../uploads"),
+  filename:(req,file,res)=>{
+    console.log(file)
+    res(null, req.body.name + "-" + file.originalname);
+  }
+})
+const upload = multer(
+  {
+    storage:storageConfig,
+    dest:'../uploads/',
+  }
+)
 @controller("/doctor")
 export class doctorController {
   constructor(
@@ -29,13 +43,12 @@ export class doctorController {
     @inject<LogService>(TYPES.LogService) private LS: LogService
   ) {}
 
-  @httpPost("/register")
+  @httpPost("/register",upload.single('image'))
   async register(
     @request() req: Request,
     @response() res: Response
   ): Promise<void> {
     try {
-      
       const { email, name, password, speciality, dob} = req.body;
      await doctorSchema.validate(req.body)
         await this.DS.registerService({
@@ -57,7 +70,7 @@ export class doctorController {
     }
   }
 
-  @httpGet("/")
+  @httpGet("/",RequredRole('Doctor'))
   async getDoctors(
     @request() req: Request,
     @response() res: Response
@@ -77,6 +90,7 @@ export class doctorController {
     @response() res: Response
   ): Promise<void> {
     try {
+      
       const { email, password } = req.body;
       await patientSchema.validate({login:req.body})
       const findData: Iusers | null = await this.DS.isUserExists(email);

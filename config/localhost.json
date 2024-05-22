@@ -1,4 +1,4 @@
 {
-  "dbConfig": "mongodb+srv://kevishshaligram:MKSTmRfboUqYJvPK@practicecluster.yuqi3gp.mongodb.net/?retryWrites=true&w=majority&appName=practiceCluster",
+  "dbConfig": "mongodb+srv://kevishshaligram:MKSTmRfboUqYJvPK@practicecluster.yuqi3gp.mongodb.net/demo?retryWrites=true&w=majority&appName=practiceCluster",
   "port": 3000
 }

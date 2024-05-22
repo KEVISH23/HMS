@@ -3,17 +3,22 @@ import {NextFunction,Response} from 'express'
 import * as  jwt from "jsonwebtoken"
 import { ApiError , errorHandler} from '@utils'
 import {status_code} from '@constants'
-import {  RequestVerify } from '@interface'
-
+import {  RequestUser, RequestVerify } from '@interface'
+import { injectable } from 'inversify'
+@injectable()
 export class IsDoctor extends BaseMiddleware{
-    handler(req: RequestVerify, res: Response, next: NextFunction): void {
+    // constructor(readonly role:string){
+    //     super()
+        
+    // }
+   public async handler(req: RequestVerify, res: Response, next: NextFunction): Promise<void> {
         try{
 
             const {token} = req.headers
             if(!token){
                 throw new ApiError(400,'Token not provided')
             }
-            jwt.verify(token.toString(),"bhaagMilkhaBhhag",(err,decoded:any)=>{
+            jwt.verify(token.toString(),"bhaagMilkhaBhhag",(err:jwt.VerifyErrors,decoded:RequestUser)=>{
                 if(err){
                     throw new ApiError(401,'Invalid Token')
                 }
