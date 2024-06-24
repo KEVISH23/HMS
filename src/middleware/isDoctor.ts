@@ -21,7 +21,7 @@ export class IsDoctor extends BaseMiddleware{
             jwt.verify(token.toString(),"bhaagMilkhaBhhag",(err:jwt.VerifyErrors,decoded:RequestUser)=>{
                 if(err){
                     throw new ApiError(401,'Invalid Token')
-                }
+                }0
                 // console.log(decoded)
                 if(decoded.role === 'Doctor'){
                     req.user = decoded

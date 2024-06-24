@@ -70,7 +70,7 @@ export class doctorController {
     }
   }
 
-  @httpGet("/",RequredRole('Doctor'))
+  @httpGet("/")
   async getDoctors(
     @request() req: Request,
     @response() res: Response
